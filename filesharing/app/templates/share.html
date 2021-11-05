@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+
+        <div class="col-lg-4 col-md-6 col-8 justify-content-center">
+            <h1 class="text-center">Sharing {{uuid}}</h1> 
+                <form method="POST">
+                    <input type="email" class="form-control mb-1" name="email" placeholder="admin@m0lecon.it">
+                    <button type="submit" class="btn btn-lg btn-primary btn-block">Submit</button>
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+                </form>
+            </div>
+        </div>
+
+
+        
+{% endblock %}

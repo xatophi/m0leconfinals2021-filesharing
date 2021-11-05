@@ -1,0 +1,32 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+
+  <div class="col-lg-9">
+    <h1 class="text-center">All files</h1>
+    
+    
+    <h6 class="text-center">your files</h6>
+
+    <ul class="list-group">
+      {% for file in files %}
+      <li class="list-group-item">
+        <a href="{{ url_for('main.download_file',uuid=file.uuid) }}">{{ file.filename }}</a> - <a class="btn" href="{{ url_for('main.share',uuid=file.uuid) }}">Share</a>
+      </li>
+      {% endfor %}
+    </ul>
+
+    <h6 class="text-center">files shared with you</h6>
+
+    <ul class="list-group">
+      {% for file in shared_files %}
+      <li class="list-group-item">
+        <a href="{{ url_for('main.download_file',uuid=file.uuid) }}">{{ file.filename }}</a>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+{% endblock %}
