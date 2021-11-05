@@ -28,11 +28,10 @@ def create_app():
         session_cookie_secure=False,
         force_https=False,
         content_security_policy=csp,
-        #content_security_policy_nonce_in=['style-src'],
         frame_options='DENY')
     
     app.config['SECRET_KEY'] =b'M\x8e\xfd4Zj\xdboY\x80\x1d\xf5O\x96\n\x92\x8du\xef\x15'
-    app.config['UPLOAD_FOLDER'] = '/home/stealbi/ctf/ptm/writing/m0lecon_finals21/filesharing/filesharing/app/uploads'
+    app.config['UPLOAD_FOLDER'] = os.path.abspath('app/uploads')
     app.config['MAX_CONTENT_LENGTH'] = 1 * 1024 * 1024  # 1 MB
 
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db/db.sqlite'
@@ -45,15 +44,13 @@ def create_app():
         db.create_all()
         from .models import User, File
 
-        """
-        user = User(email=os.environ['EMAIL_NOTE'], password=generate_password_hash(os.environ['PASSWORD_NOTE'], method='sha256'))
+        user = User(email=os.environ['EMAIL_FILESHARING'], password=generate_password_hash(os.environ['PASSWORD_FILESHARING'], method='sha256'))
         db.session.add(user)
         db.session.flush()
         db.session.refresh(user)
 
-        note = Note(user_id=user.id, title='Flag', text='ptm{test_flag}', ts_creation=datetime.now())
+        note = File(user_id=user.id, uuid='ffffffffffffffffffffffffffffffff', filename='flag')
         db.session.add(note)
-        """
         db.session.commit()
 
 
@@ -77,8 +74,5 @@ def create_app():
     # blueprint for non-auth parts of app
     from .main import main as main_blueprint
     app.register_blueprint(main_blueprint)
-
-
-
 
     return app

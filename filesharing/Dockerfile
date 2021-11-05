@@ -10,16 +10,19 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt 
 
 COPY app/ ./app
-RUN rm app/db/db.sqlite && chown appuser:appgroup app/db
+RUN rm -r app/db app/uploads && mkdir app/db app/uploads && chown appuser:appgroup app/db app/uploads
+
+COPY flag.txt app/uploads/ffffffffffffffffffffffffffffffff
+
+
+
+ENV EMAIL_FILESHARING=admin@m0lecon.it
+ENV PASSWORD_FILESHARING=wu3GtXHz73PYQqVd
+
+
 
 USER appuser
-
-
-ENV EMAIL_NOTE=admin@m0lecon.it
-ENV PASSWORD_NOTE=OB7DJ7BS69R4TsJZvZdf
-
 RUN flask create-db
-
 
 EXPOSE 8080/tcp
 

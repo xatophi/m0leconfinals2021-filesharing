@@ -1,0 +1,14 @@
+version: "3.9"
+services:
+  filesharing:
+    build: ./filesharing
+    ports:
+      - "8082:8080"
+    environment:
+      - BOT_URL=http://bot:9999/visit
+  bot:
+    build: ./bot
+    environment:
+      - URL_FILESHARING=http://filesharing:8080
+      - EMAIL_FILESHARING=admin@m0lecon.it
+      - PASSWORD_FILESHARING=wu3GtXHz73PYQqVd
