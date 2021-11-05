@@ -8,10 +8,10 @@ class User(UserMixin, db.Model):
     files = db.relationship('File', backref='user', lazy=True)
 
 class File(db.Model):
-    uuid = db.Column(db.Text, primary_key=True) 
+    uuid = db.Column(db.String(length=32), primary_key=True) 
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     filename = db.Column(db.Text, nullable=False)
 
 class SharedFile(db.Model):
-    file_uuid = db.Column(db.Text, db.ForeignKey('file.uuid'), primary_key=True)
+    file_uuid = db.Column(db.String(length=32), db.ForeignKey('file.uuid'), primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)

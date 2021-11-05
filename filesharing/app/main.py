@@ -42,12 +42,12 @@ def upload_file():
     if request.method == 'POST':
 
         if 'file' not in request.files:
-            flash('No file part')
+            flash('No file part','error')
             return redirect(request.url)
         file = request.files['file']
 
         if file.filename == '':
-            flash('No selected file')
+            flash('No selected file','error')
             return redirect(request.url)
 
         if file:
@@ -137,9 +137,9 @@ def report_abuse():
             if visit_url(url):
                 return 'ok'
             else:
-                return 'something is wrong', 500
+                return redirect(url_for('main.error'))
         else:
-            flash('Invalid data')
+            flash('Invalid data','error')
             
     return render_template('abuse.html')
 
