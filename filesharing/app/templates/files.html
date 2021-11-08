@@ -4,29 +4,51 @@
 {% block content %}
 <div class="row justify-content-center">
 
-  <div class="col-lg-9">
-    <h1 class="text-center">All files</h1>
-    
-    
-    <h6 class="text-center">your files</h6>
+  <div class="col-lg-8 col-md-10">
 
-    <ul class="list-group">
-      {% for file in files %}
-      <li class="list-group-item">
-        <a href="{{ url_for('main.download_file',uuid=file.uuid) }}">{{ file.filename }}</a> - <a class="btn" href="{{ url_for('main.share',uuid=file.uuid) }}">Share</a>
-      </li>
-      {% endfor %}
-    </ul>
+    {% if not files and not shared_files %}
 
-    <h6 class="text-center">files shared with you</h6>
+      <h1 class="text-center my-2">No file available for your account</h1>
+      <h6 class="text-center my-4">Please <a href=/upload>upload</a> a file or ask someone to share a file with you.</h6>
 
-    <ul class="list-group">
-      {% for file in shared_files %}
-      <li class="list-group-item">
-        <a href="{{ url_for('main.download_file',uuid=file.uuid) }}">{{ file.filename }}</a>
-      </li>
-      {% endfor %}
-    </ul>
+    {% else %}
+
+      <h1 class="text-center my-2">All files</h1>
+      
+      {% if files %} 
+        <h6 class="text-center mt-4 mb-2">My files</h6>
+
+        <ul class="list-group">
+          {% for file in files %}
+          <li class="list-group-item">
+            <div class="d-flex">
+              <div class="mr-auto my-auto">{{ file.filename }}</div> 
+              <a class="btn btn-primary ml-2" href="{{ url_for('main.share',uuid=file.uuid) }}">Share</a> 
+              <a class="btn btn-primary ml-2" href="{{ url_for('main.download_file',uuid=file.uuid) }}">Download</a>
+            </div>
+
+          </li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+
+      {% if shared_files %}
+        <h6 class="text-center mt-4 mb-2">Shared with me</h6>
+
+        <ul class="list-group">
+          {% for file in shared_files %}
+          <li class="list-group-item">
+            <div class="d-flex">
+              <div class="mr-auto my-auto">{{ file.filename }}</div> 
+              <a class="btn btn-primary ml-2" href="{{ url_for('main.download_file',uuid=file.uuid) }}">Download</a>
+            </div>
+
+          </li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+
+    {% endif %}
   </div>
 </div>
 {% endblock %}

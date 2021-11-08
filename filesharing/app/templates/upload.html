@@ -4,15 +4,16 @@
 {% block content %}
 <div class="row justify-content-center">
 
-  <div class="col-lg-9">
+  <div class="col-lg-4 col-md-6 col-8 justify-content-center">
+    <h1 class="text-center my-2">Give me a file to upload</h1> 
 
-    <form method="POST" enctype="multipart/form-data">
+    <form method="POST" enctype="multipart/form-data" class="mt-4">
       <div class="custom-file">
         <input type="file" name="file" class="custom-file-input" id="validatedCustomFile" required>
         <label class="custom-file-label" for="validatedCustomFile">Choose file...</label>
       </div>
       
-      <button class="btn btn-primary" type="submit" >Upload</button>
+      <button class="btn btn-primary btn-block my-2" type="submit" >Upload</button>
       <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
     </form>
   
