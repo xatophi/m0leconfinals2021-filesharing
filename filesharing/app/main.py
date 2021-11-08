@@ -9,21 +9,6 @@ from . import db, visit_url, talisman
 
 main = Blueprint('main', __name__)
 
-'''
-@main.after_app_request
-def set_headers(resp):
-
-    """
-    resp.headers['Content-Security-Policy'] = "default-src 'none'; script-src 'self' 'unsafe-inline'; style-src https://stackpath.bootstrapcdn.com"
-    resp.headers['X-Frame-Options'] = 'DENY'
-    resp.headers['X-Content-Type-Options'] = 'nosniff'
-    resp.headers['X-XSS-Protection'] = '1; mode=block'
-    """
-    resp.headers['Cross-Origin-Opener-Policy'] = 'same-origin'
-    return resp
-'''
-
-
 @main.route('/')
 @login_required
 def index():
@@ -34,7 +19,6 @@ def index():
 def play():
     xss = request.args.get('xss')
     return make_response(render_template('play.html',xss=xss))
-
 
 @main.route('/upload', methods=['GET', 'POST'])
 @login_required
@@ -57,6 +41,7 @@ def upload_file():
             new_file = File(uuid=uuid, filename=filename, user_id=current_user.id)
             db.session.add(new_file)
             db.session.commit()
+            flash('File uploaded','success')
             return redirect(url_for('main.show_files'))
 
     return make_response(render_template('upload.html'))
@@ -68,13 +53,15 @@ def download_file(uuid):
     file = File.query.filter(File.uuid == uuid).first()
 
     if not file:
-        return redirect(url_for('main.error',msg='File not found'))
+        flash('File not found','error')
+        return redirect(url_for('main.show_files'))
     
     if file.user_id != current_user.id:
         
         sf = SharedFile.query.filter(SharedFile.file_uuid == file.uuid, SharedFile.user_id == current_user.id).first()
         if not sf:
-            return redirect(url_for('main.error',msg='Forbidden'))
+            flash('Forbidden','error')
+            return redirect(url_for('main.show_files'))
 
     return send_from_directory(current_app.config["UPLOAD_FOLDER"], uuid, as_attachment=True, download_name=file.filename)
     
@@ -92,27 +79,33 @@ def share(uuid):
     file = File.query.filter(File.uuid == uuid).first()
 
     if not file:
-        return redirect(url_for('main.error',msg='File not found'))    
+        flash('File not found','error')
+        return redirect(url_for('main.show_files'))
     elif file.user_id != current_user.id:
-        return redirect(url_for('main.error',msg='Forbidden'))
-    
+        flash('Forbidden','error')
+        return redirect(url_for('main.show_files'))
+
     if request.method == 'POST':
         
         email = request.form.get('email')
 
         if not email:
-            return redirect(url_for('main.error',msg='Missing "email" value'))
-        
+            flash('Missing "email" value','error')
+            return redirect(request.url)
+
         u = User.query.filter(User.email == email).first()
         
         if not u:
-            return redirect(url_for('main.error',msg='User not found'))
+            flash('User not found','error')
+            return redirect(request.url)
 
         if u.id == current_user.id:
-            return redirect(url_for('main.error',msg='wtf, no'))
-
+            flash('WTF, why?','error')
+            return redirect(request.url)
+            
         if file.filename == 'flag':
-            return redirect(url_for('main.error',msg='No flag sharing plz'))
+            flash("It's file sharing not flag sharing",'error')
+            return redirect(request.url)
 
         try:
             sf = SharedFile(file_uuid=file.uuid, user_id=u.id)
@@ -120,9 +113,11 @@ def share(uuid):
             db.session.add(sf)
             db.session.commit()
         except IntegrityError:
-            return redirect(url_for('main.error',msg='File already shared with this user'))
+            flash('File already shared with this user','error')
+            return redirect(request.url)
 
-        return 'Done'
+        flash('Shared','success')
+        return redirect(request.url)
 
     return render_template('share.html')
     
@@ -135,20 +130,11 @@ def report_abuse():
 
         if url and url.startswith('http'):
             if visit_url(url):
-                return 'ok'
+                flash('Visited','success')
             else:
-                return redirect(url_for('main.error'))
+                flash('Something went wrong','error')
         else:
             flash('Invalid data','error')
             
     return render_template('abuse.html')
 
-
-@main.route('/error')
-def error():
-
-    msg = request.args.get('msg')
-    if not msg:
-        msg = "Error"
-    return render_template('error.html',msg=msg), 400
-    

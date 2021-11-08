@@ -12,12 +12,16 @@ talisman = Talisman()
 
 def visit_url(url):
     if url and url.startswith('http'):
-        r = requests.post(os.environ['BOT_URL'],json={'url':url})
-        if r:
-            return True
-        else:
+        try:
+            r = requests.post(os.environ['BOT_URL'],json={'url':url})
+            if r:
+                return True
+            else:
+                return False
+        except:
             return False
 
+    
 def create_app():
     app = Flask(__name__)
     csrf = SeaSurf(app)

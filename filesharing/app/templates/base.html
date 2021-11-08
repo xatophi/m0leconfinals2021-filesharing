@@ -7,7 +7,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>FileUpload</title>
+  <title>FileSharing</title>
 
   <!-- Bootstrap core CSS -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
@@ -18,7 +18,7 @@
   <!-- Navigation -->
   <nav class="navbar navbar-expand navbar-dark bg-dark mb-3">
     <div class="container">
-      <a class="navbar-brand" href="/">FileUpload</a>
+      <a class="navbar-brand" href="/">FileSharing</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -73,7 +73,7 @@
         <div class="col-lg-4 col-md-6 col-sm-10">
           {% for category, message in messages %}
             
-              <div class="alert {% if category=='success' %}alert-success{% else %}alert-danger{% endif %} mb-2">
+              <div class="alert {% if category=='success' %}alert-success{% else %}alert-danger{% endif %} mb-2 text-center">
                   {{ message }}
               </div>
           
