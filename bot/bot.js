@@ -29,11 +29,13 @@ async function visit(url) {
         await page.keyboard.type(PASSWORD, {delay: 10})
         await page.click('#submit')
 
+        await page.waitForNavigation({waitUntil: 'networkidle2'});
+
         //console.log(await page.cookies())
 		
         // Contacting URL after auth
         //console.log(url)
-		//await page.goto(url)
+		await page.goto(url)
 
         // wait in the page
 		await new Promise(resolve => setTimeout(resolve, TIMEOUT));
