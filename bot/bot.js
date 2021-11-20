@@ -6,15 +6,28 @@ const URL_LOGIN = URL + '/login'
 const EMAIL = process.env['EMAIL_FILESHARING']
 const PASSWORD = process.env['PASSWORD_FILESHARING']
 
-const TIMEOUT = 1000*3
+const TIMEOUT = 1000*5 // 5s
 
 async function visit(url) {
 
     console.log('Running browser to visit "%s"', url);
 
 	const browser = await puppeteer.launch({ 
-        args: ['--no-sandbox'],
-        executablePath: '/usr/bin/chromium'})
+        headless: true,
+        args: [
+            '--disable-default-apps',
+            '--disable-extensions',
+            '--disable-gpu',
+            '--disable-sync',
+            '--disable-translate',
+            '--hide-scrollbars',
+            '--metrics-recording-only',
+            '--mute-audio',
+            '--no-first-run',
+            '--no-sandbox',
+            '--safebrowsing-disable-auto-update'
+        ],
+        executablePath: '/usr/bin/google-chrome'})
 
 	let page = await browser.newPage()
     await page.setDefaultNavigationTimeout(TIMEOUT);

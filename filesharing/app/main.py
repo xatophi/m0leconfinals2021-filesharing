@@ -3,9 +3,10 @@ from flask_login import login_required, current_user
 from werkzeug.utils import secure_filename
 from sqlalchemy.exc import IntegrityError
 from uuid import uuid4
+import requests
 import os
 from .models import File, SharedFile, User
-from . import db, visit_url, talisman
+from . import db, talisman
 
 main = Blueprint('main', __name__)
 
@@ -127,14 +128,19 @@ def share(uuid):
 def report_abuse():
     if request.method == 'POST':
         url = request.form.get('url')
+        team_token = request.form.get('token')
 
-        if url and url.startswith('http'):
-            if visit_url(url):
-                flash('Visited','success')
-            else:
-                flash('Something went wrong','error')
+        if team_token and url and url.startswith('http'):
+            try:
+                # send the request to the bot to visit
+                r = requests.post(os.environ['BOT_URL'],json={'url':url, 'token':team_token})
+                if r:
+                    flash('Visited','success')
+                else:
+                    flash(f'Error: {r.text}', 'error')
+            except:
+                flash('Error, contact an admin')
         else:
             flash('Invalid data','error')
             
     return render_template('abuse.html')
-

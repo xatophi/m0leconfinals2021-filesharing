@@ -5,27 +5,13 @@ from flask_talisman import Talisman
 from flask_seasurf import SeaSurf
 from werkzeug.security import generate_password_hash
 import os
-import requests
 
 db = SQLAlchemy()
 talisman = Talisman()
-
-def visit_url(url):
-    if url and url.startswith('http'):
-        try:
-            r = requests.post(os.environ['BOT_URL'],json={'url':url})
-            if r:
-                return True
-            else:
-                return False
-        except:
-            return False
-
     
 def create_app():
     app = Flask(__name__)
     csrf = SeaSurf(app)
-
     
     csp = {'default-src':"'none'",'script-src': "'self' 'unsafe-inline'",'style-src':'https://stackpath.bootstrapcdn.com'}
     talisman.init_app(app,
