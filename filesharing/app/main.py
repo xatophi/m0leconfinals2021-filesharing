@@ -49,7 +49,7 @@ def upload_file():
 
 @main.route('/upload/<uuid>')
 @login_required
-@talisman(content_security_policy={'script-src':"'self'"})
+@talisman(content_security_policy={'script-src':"'none'"})
 def download_file(uuid):
     file = File.query.filter(File.uuid == uuid).first()
 

@@ -13,7 +13,7 @@ def create_app():
     app = Flask(__name__)
     csrf = SeaSurf(app)
     
-    csp = {'default-src':"'none'",'script-src': "'self' 'unsafe-inline'",'style-src':'https://stackpath.bootstrapcdn.com'}
+    csp = {'default-src':"'none'",'script-src': "'self'",'style-src':'https://stackpath.bootstrapcdn.com'}
     talisman.init_app(app,
         session_cookie_secure=False,
         force_https=False,
