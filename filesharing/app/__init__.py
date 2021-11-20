@@ -20,7 +20,7 @@ def create_app():
         content_security_policy=csp,
         frame_options='DENY')
     
-    app.config['SECRET_KEY'] =b'M\x8e\xfd4Zj\xdboY\x80\x1d\xf5O\x96\n\x92\x8du\xef\x15'
+    app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
     app.config['UPLOAD_FOLDER'] = os.path.abspath('app/uploads')
     app.config['MAX_CONTENT_LENGTH'] = 1 * 1024 * 1024  # 1 MB
 

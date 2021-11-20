@@ -14,11 +14,8 @@ RUN rm -r app/db app/uploads && mkdir app/db app/uploads && chown appuser:appgro
 
 COPY flag.txt app/uploads/ffffffffffffffffffffffffffffffff
 
-
-
 ENV EMAIL_FILESHARING=admin@m0lecon.it
 ENV PASSWORD_FILESHARING=wu3GtXHz73PYQqVd
-
 
 
 USER appuser
@@ -26,5 +23,4 @@ RUN flask create-db
 
 EXPOSE 8080/tcp
 
-
-CMD gunicorn -w 4 --bind :8080 "app:create_app()" --user appuser --group appgroup
+CMD export SECRET_KEY=$(cat /dev/urandom | base64 | head -c 30) && gunicorn -w 4 --bind :8080 "app:create_app()" --user appuser --group appgroup
