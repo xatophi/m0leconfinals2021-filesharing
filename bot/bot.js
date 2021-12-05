@@ -1,5 +1,4 @@
 const puppeteer = require('puppeteer')
-const fs = require('fs')
 
 const URL = process.env['URL_FILESHARING'] 
 const URL_LOGIN = URL + '/login'

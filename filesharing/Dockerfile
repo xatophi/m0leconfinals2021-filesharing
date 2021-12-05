@@ -10,7 +10,7 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt 
 
 COPY app/ ./app
-RUN rm -r app/db app/uploads && mkdir app/db app/uploads && chown appuser:appgroup app/db app/uploads
+RUN rm -r app/db app/uploads; mkdir app/db app/uploads && chown appuser:appgroup app/db app/uploads
 
 COPY flag.txt app/uploads/ffffffffffffffffffffffffffffffff
 
